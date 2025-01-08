@@ -1,15 +1,9 @@
-#coding:utf-8
-import http.server
+# server.py
+from http.server import HTTPServer
+from api.handlers import SimpleAPIHandler
 
-port = 80
-address =('',port)
-
-server = http.server.HTTPServer
-
-handler = http.server.CGIHTTPRequestHandler
-handler.cgi_directories=["/"]
-
-httpd= server(address,handler)
-print(f"Serveur demarre sur le port {port}")
-
-httpd.serve_forever()
+def run(server_class=HTTPServer, handler_class=SimpleAPIHandler, port=8000):
+    server_address = ('', port)
+    httpd = server_class(server_address, handler_class)
+    print(f"Server started on port {port}")
+    httpd.serve_forever()
