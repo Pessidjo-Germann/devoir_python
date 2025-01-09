@@ -1,7 +1,7 @@
 # api/handlers.py
 from http.server import BaseHTTPRequestHandler
 import json
-from handler_auth import handle_register, handle_login
+from .handler_auth import handle_register, handle_login
 
 class SimpleAPIHandler(BaseHTTPRequestHandler):
     def _send_json_response(self, status_code, data):
@@ -17,11 +17,12 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
         data = json.loads(post_data.decode())
 
         if self.path == '/api/register':
-            handle_register(data)
+            handle_register(self,data)
         elif self.path == '/api/login':
-            handle_login(data)
+            handle_login(self,data)
         else:
             self._send_json_response(404, {"error": "Endpoint not found"})
+    #     handle_login(data)
 
     
     def do_GET(self):
@@ -39,24 +40,3 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
         else:
             self.send_error(404, "Endpoint not found")
 
-    def do_POST(self):
-        if self.path == '/api/data':
-            content_length = int(self.headers['Content-Length'])
-            post_data = self.rfile.read(content_length)
-            
-            # Convertir les données POST en JSON
-            data = json.loads(post_data.decode())
-            
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-            
-            # Exemple de réponse
-            response = {
-                "message": "Données reçues avec succès",
-                "received_data": data,
-                "status": "success"
-            }
-            self.wfile.write(json.dumps(response).encode())
-        else:
-            self.send_error(404, "Endpoint not found")
