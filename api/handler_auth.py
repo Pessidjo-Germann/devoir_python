@@ -43,10 +43,6 @@ def handle_register(self, data):
         #cur.close()
         #conn.close()
 
-        
-
-    
-
 def handle_login(self, data):
     """
     Gère la connexion (login).
@@ -86,13 +82,6 @@ def handle_login(self, data):
             self._send_json_response(200, response_data)
         else:
             self._send_json_response(401, {"error": "Invalid card number"})
-
-
-        
-
-            
-
-        
 
     except psycopg2.Error as e:
         self._send_json_response(405, {"error": "Erreur lors du log"})
